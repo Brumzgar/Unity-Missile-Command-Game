@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyMissileManager : MonoBehaviour
@@ -19,8 +20,6 @@ public class EnemyMissileManager : MonoBehaviour
 
     public void EnemyMissilesWave()
     {
-        print(PlayerPrefs.GetFloat("enemyMissilesSpeed") + " = PlayerPrefs.GetFloat(enemyMissilesSpeed)");
-
         UpdateEnemyTargetList();
 
         CreateEnemyMissileList();
@@ -38,5 +37,28 @@ public class EnemyMissileManager : MonoBehaviour
     public static void UpdateEnemyTargetList()
     {
         enemyTargetList = GameObject.FindGameObjectsWithTag("Target");
+    }
+
+    public void CheckEnemyMissilesAmount()
+    {
+        StartCoroutine(UpdateEnemyMissilesList());
+    }
+
+    IEnumerator UpdateEnemyMissilesList()
+    {
+        UpdateEnemyTargetList();
+        while (GameStateManager.State != GameState.GameOver)
+        {
+            yield return new WaitForSeconds(1);
+            enemyMissileList = GameObject.FindGameObjectsWithTag("EnemyMissile");
+
+            if (enemyMissileList.Length < 1)
+            {
+                yield return new WaitForSeconds(2);
+                if (GameStateManager.State != GameState.GameOver)
+                    GameStateManager.Instance.UpdateGameState(GameState.Summary);
+                break;
+            }
+        }
     }
 }

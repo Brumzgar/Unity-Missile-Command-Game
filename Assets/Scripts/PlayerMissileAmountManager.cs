@@ -21,7 +21,6 @@ public class PlayerMissileAmountManager : MonoBehaviour
         {
             missileList[i] = Instantiate(missileListExample[i], transform) as GameObject;
         }
-
     }
 
     public void RemoveMissile()

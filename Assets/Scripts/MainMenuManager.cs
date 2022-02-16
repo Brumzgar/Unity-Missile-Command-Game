@@ -6,9 +6,8 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         PlayerPrefs.SetFloat("enemyMissilesSpeed", 1);
-        print(PlayerPrefs.GetFloat("enemyMissilesSpeed") + " = PlayerPrefs.GetFloat(enemyMissilesSpeed)");
         PlayerPrefs.SetInt("roundNumber", 0);
-        print("Reset");
+        PlayerPrefs.SetInt("score", 0);
     }
 
     public void StartGame()

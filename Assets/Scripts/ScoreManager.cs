@@ -1,59 +1,26 @@
-using System.Collections;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    // Zmienic nazwe na SummaryManager ? 
+    private static int score;
 
-    public static GameObject[] enemyMissilesList;
+    [SerializeField]
+    private GameObject scoreText;
 
-    private bool scoreManagerFlag;
-
-    // [SerializeField]
-    // private GameObject scoreText;
-
-    // [SerializeField]
-    // private GameObject highScoreText;
-
-    public static void StartSummary()
+    private void Start()
     {
-        print("StartSummary()");
-        // StartCoroutine(UpdateEnemyMissilesList()); - zmienic na invoke repeating
-        // InvokeRepeating("UpdatePath", 0f, .5f);
+        score = PlayerPrefs.GetInt("score");
     }
 
-    /*void Update()
+    public static void UpdateScore(int value)
     {
-        if (GameStateManager.State == GameState.Summary && scoreManagerFlag == false)
-        {
-            scoreManagerFlag = true;
-            StartCoroutine(UpdateEnemyMissilesList());
-        }
-    }*/
-
-    IEnumerator UpdateEnemyMissilesList()
-    {
-        while (GameStateManager.State == GameState.Summary)
-        {
-            enemyMissilesList = GameObject.FindGameObjectsWithTag("EnemyMissile");
-
-            print("enemyMissilesList.Length = "+ enemyMissilesList.Length);
-
-            yield return new WaitForSeconds(1);
-
-            if (enemyMissilesList.Length <= 1)
-            {
-                break;
-            }
-        }
-        // Summary Cities + PlayerMissiles()
+        score += value;
+        PlayerPrefs.SetInt("score", score);
     }
 
-    // Summary Cities + PlayerMissiles()
-    // {
-    //      SavedCitiesList = GameObject.FindGameObjectsWithTag("City");
-    //      SavedPlayerMissilesInStorage = GameObject.FindGameObjectsWithTag("PlayerMissileInStorage");
-    //      
-    //
-    // }
+    private void FixedUpdate()
+    {
+        scoreText.GetComponent<Text>().text = PlayerPrefs.GetInt("score").ToString();
+    }
 }

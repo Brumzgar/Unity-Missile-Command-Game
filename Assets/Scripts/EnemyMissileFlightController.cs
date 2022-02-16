@@ -8,11 +8,13 @@ public class EnemyMissileFlightController : MonoBehaviour
 
     private void Start()
     {
-        index = Random.Range(0, EnemyMissileManager.enemyTargetList.Length);
-        target = EnemyMissileManager.enemyTargetList[index];
-        enemyMissileSpeed = PlayerPrefs.GetFloat("enemyMissilesSpeed");
+        if (GameStateManager.State != GameState.GameOver)
+        {
+            index = Random.Range(0, EnemyMissileManager.enemyTargetList.Length);
+            target = EnemyMissileManager.enemyTargetList[index];
+            enemyMissileSpeed = PlayerPrefs.GetFloat("enemyMissilesSpeed");
+        }
     }
-
 
     private void FixedUpdate()
     {

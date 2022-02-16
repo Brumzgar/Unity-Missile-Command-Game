@@ -12,6 +12,12 @@ public class GameStateManager : MonoBehaviour
     [SerializeField]
     private EnemyMissileManager enemyMissileManager;
 
+    [SerializeField]
+    private SummaryManager summaryManager;
+
+    [SerializeField]
+    private GameOverAndHighScoreManager gameOverAndHighScoreManager;
+
     private void Awake()
     {
         Instance = this;
@@ -43,9 +49,9 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (EnemyMissileManager.enemyTargetList.Length == 1 && gameOverFlag == false)
+        if (EnemyMissileManager.enemyTargetList.Length < 1 && gameOverFlag == false)
         {
             gameOverFlag = true;
             UpdateGameState(GameState.GameOver);
@@ -54,40 +60,37 @@ public class GameStateManager : MonoBehaviour
     }
     private void GameOverState()
     {
-        print("GameOverState()");
-
+        gameOverAndHighScoreManager.GameOver();
     }
 
     private void SummaryState()
     {
-        print("SummaryState()");
-        ScoreManager.StartSummary();
+        summaryManager.StartSummary();
     }
 
     private void EnemyMissileWaveState()
     {
-        print("EnemyMissileWaveState()");
         StartCoroutine(EnemyMissileWaves());
     }
 
     private void LevelStartState()
     {
-        print("LevelStartState()");
+        // LevelScene Starts in this state
     }
 
     IEnumerator EnemyMissileWaves()
     {
         while (State == GameState.EnemyMissileWave)
         {
-            for (int i = 0; i <= 3; i++)
+            for (int i = 0; i <= 4; i++)
             {
                 enemyMissileManager.EnemyMissilesWave();
                 yield return new WaitForSeconds(5);
             }
             break;
         }
-        // UpdateGameState(GameState.Summary); - za szybko sie odpala i wylacz strzelanie,
-        // zmienic ze najpier sprawdza lista pociski wroga a potem jest summary
+        if (State != GameState.GameOver)
+            enemyMissileManager.CheckEnemyMissilesAmount();
     }
 }
 
