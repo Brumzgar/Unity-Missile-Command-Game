@@ -51,6 +51,8 @@ public class GameStateManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        enemyMissileManager.UpdateEnemyTargetList();
+
         if (EnemyMissileManager.enemyTargetList.Length < 1 && gameOverFlag == false)
         {
             gameOverFlag = true;
